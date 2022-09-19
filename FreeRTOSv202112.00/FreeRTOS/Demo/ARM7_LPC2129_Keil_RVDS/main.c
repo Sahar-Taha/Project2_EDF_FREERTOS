@@ -120,9 +120,24 @@ static void vErrorChecks( void *pvParameters );
  */
 static void prvSetupHardware( void );
 
+//-------------------------------------------------
+// Tasks Protopies
+//-------------------------------------------------
+void TSK_A (void *pvParameters);
+void TSK_B (void *pvParameters);
+void TSK_C (void *pvParameters);
+void TSK_D (void *pvParameters);
 /*-----------------------------------------------------------*/
 
+//-------------------------------------------------
+// Global Variables
+//-------------------------------------------------
 
+#define CAPACITY 3 //cpu time in tick
+#define A_PERIOD 3 //task A period
+#define B_PERIOD 6 //task B period
+#define C_PERIOD 9 //task A period
+#define D_PERIOD 12 //task B period
 
 /*
  * Application entry point:
@@ -131,11 +146,12 @@ static void prvSetupHardware( void );
 int main( void )
 {
 	/* Setup the hardware for use with the Keil demo board. */
-	//prvSetupHardware();
+   prvSetupHardware();
 
-//	/* Start the demo/test application tasks. */
-//	vAltStartComTestTasks( mainCOM_TEST_PRIORITY, mainCOM_TEST_BAUD_RATE, mainCOM_TEST_LED );
-//	vStartLEDFlashTasks( mainLED_TASK_PRIORITY );
+	/* Start the demo/test application tasks. */
+
+	//vAltStartComTestTasks( mainCOM_TEST_PRIORITY, mainCOM_TEST_BAUD_RATE, mainCOM_TEST_LED );
+	//vStartLEDFlashTasks( mainLED_TASK_PRIORITY );
 //	vStartPolledQueueTasks( mainQUEUE_POLL_PRIORITY );
 //	vStartBlockingQueueTasks( mainBLOCK_Q_PRIORITY );
 //	vStartSemaphoreTasks( mainSEM_TEST_PRIORITY );
@@ -159,10 +175,146 @@ int main( void )
 //	available for the idle task to be created. */
 
 
+		xTaskPeriodicCreate( TSK_A, ( const char * ) "A",
+			configMINIMAL_STACK_SIZE, NULL,
+			 1, NULL, A_PERIOD );
+			 
+		xTaskPeriodicCreate( TSK_B, ( const char * ) "B",
+			 configMINIMAL_STACK_SIZE, NULL,
+			 1, NULL, B_PERIOD );
 
-
+				xTaskPeriodicCreate( TSK_C, ( const char * ) "A",
+			configMINIMAL_STACK_SIZE, NULL,
+			 1, NULL, C_PERIOD );
+			 
+		xTaskPeriodicCreate( TSK_D, ( const char * ) "B",
+			 configMINIMAL_STACK_SIZE, NULL,
+			 1, NULL, D_PERIOD );
+		// FreeRTOS Scheduler starten
+     vTaskStartScheduler();
 
 	for( ;; );
+}
+
+
+void TSK_A (void *pvParameters)
+{
+	TickType_t xLastWakeTimeA;
+	const TickType_t xFrequency = A_PERIOD; //tsk A frequency
+	volatile int count = CAPACITY; //tsk A capacity
+	  
+	// Initialise the xLastWakeTime variable with the current time.
+	xLastWakeTimeA = 0;
+	while(1)
+  {
+		TickType_t xTime = xTaskGetTickCount ();
+
+		TickType_t x;
+	 while(count != 0)
+	 {
+		if(( x = xTaskGetTickCount () ) > xTime)
+		{
+			xTime = x;
+		}
+   }
+	 count = CAPACITY;
+	 // Wait for the next cycle.
+   vTaskDelayUntil( &xLastWakeTimeA, xFrequency );
+ }
+}
+
+
+
+void TSK_B (void *pvParameters)
+{
+	TickType_t xLastWakeTimeA;
+	const TickType_t xFrequency = A_PERIOD; //tsk A frequency
+	volatile int count = CAPACITY; //tsk A capacity
+	
+	// Initialise the xLastWakeTime variable with the current time.
+	xLastWakeTimeA = 0;
+	while(1)
+  {
+		TickType_t xTime = xTaskGetTickCount ();
+
+		TickType_t x;
+	 while(count != 0)
+	 {
+		if(( x = xTaskGetTickCount () ) > xTime)
+		{
+			xTime = x;
+		}
+   }
+	 count = CAPACITY;
+	 // Wait for the next cycle.
+   vTaskDelayUntil( &xLastWakeTimeA, xFrequency );
+ }
+}
+
+
+void TSK_C (void *pvParameters)
+{
+	TickType_t xLastWakeTimeA;
+	const TickType_t xFrequency = A_PERIOD; //tsk A frequency
+	volatile int count = CAPACITY; //tsk A capacity
+	  
+	// Initialise the xLastWakeTime variable with the current time.
+	xLastWakeTimeA = 0;
+	while(1)
+  {
+		TickType_t xTime = xTaskGetTickCount ();
+
+		TickType_t x;
+	 while(count != 0)
+	 {
+		if(( x = xTaskGetTickCount () ) > xTime)
+		{
+			xTime = x;
+		}
+   }
+	 count = CAPACITY;
+	 // Wait for the next cycle.
+   vTaskDelayUntil( &xLastWakeTimeA, xFrequency );
+ }
+}
+
+void TSK_D (void *pvParameters)
+{
+	TickType_t xLastWakeTimeA;
+	const TickType_t xFrequency = A_PERIOD; //tsk A frequency
+	volatile int count = CAPACITY; //tsk A capacity
+	  
+	// Initialise the xLastWakeTime variable with the current time.
+	xLastWakeTimeA = 0;
+	while(1)
+  {
+		TickType_t xTime = xTaskGetTickCount ();
+
+		TickType_t x;
+	 while(count != 0)
+	 {
+		if(( x = xTaskGetTickCount () ) > xTime)
+		{
+			xTime = x;
+		}
+   }
+	 count = CAPACITY;
+	 // Wait for the next cycle.
+   vTaskDelayUntil( &xLastWakeTimeA, xFrequency );
+ }
+}
+
+
+void vApplicationTickHook(void)
+{
+	//GPIO_write(PORT_0, PIN1, PIN_IS_HIGH);
+	//GPIO_write(PORT_0, PIN1, PIN_IS_LOW);  
+  
+}
+
+void vApplicationIdleHook(void)
+{
+	
 }
 /*-----------------------------------------------------------*/
 

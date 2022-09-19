@@ -451,7 +451,7 @@ void vListInitialiseItem( ListItem_t * const pxItem ) PRIVILEGED_FUNCTION;
  * \ingroup LinkedList
  */
 void vListInsert( List_t * const pxList,
-                  ListItem_t * const pxNewListItem ) PRIVILEGED_FUNCTION;
+                  ListItem_t * const pxNewListItem  ) PRIVILEGED_FUNCTION;
 
 /*
  * Insert a list item into a list.  The item will be inserted in a position

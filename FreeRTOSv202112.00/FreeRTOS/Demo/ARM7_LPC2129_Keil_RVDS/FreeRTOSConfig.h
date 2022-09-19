@@ -41,17 +41,32 @@
  *
  * See http://www.freertos.org/a00110.html
  *----------------------------------------------------------*/
+////E.C. : MACROS
+//#define traceTASK_SWITCHED_OUT() { char name[20];
+// getTaskName(name);
+// printf("Task Out: %s\n", name );
+//}
+// #define traceTASK_SWITCHED_IN() { char name[20];
+// getTaskName(name);
+// printf("Task IN: %s\n", name );
+// }
+// #define traceTASK_DELAY_UNTIL() { char name[20]; getTaskName(name);
+// printf("Task Delay: %s, ", name );
+//}
+
+
 
 #define configUSE_PREEMPTION		1
-#define configUSE_IDLE_HOOK			0
-#define configUSE_TICK_HOOK			0
+#define configUSE_IDLE_HOOK			1
+#define configUSE_TICK_HOOK			1
 #define configCPU_CLOCK_HZ			( ( unsigned long ) 60000000 )	/* =12.0MHz xtal multiplied by 5 using the PLL. */
 #define configTICK_RATE_HZ			( ( TickType_t ) 1000 )
 #define configMAX_PRIORITIES		( 4 )
 #define configMINIMAL_STACK_SIZE	( ( unsigned short ) 90 )
 #define configTOTAL_HEAP_SIZE		( ( size_t ) 13 * 1024 )
 #define configMAX_TASK_NAME_LEN		( 8 )
-#define configUSE_TRACE_FACILITY	0
+//configUSE_EDF_SCHEDULER
+#define configUSE_TRACE_FACILITY	1  
 #define configUSE_16_BIT_TICKS		0
 #define configIDLE_SHOULD_YIELD		1
 
